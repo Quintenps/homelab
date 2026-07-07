@@ -1,3 +1,28 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: plex-config-pv
+spec:
+  capacity:
+    storage: 50Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /data/services/plex/config
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: plex-config-pvc
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
+  volumeName: plex-config-pv
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
