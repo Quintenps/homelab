@@ -16,8 +16,27 @@ spec:
       containers:
         - name: sabnzbd
           image: lscr.io/linuxserver/sabnzbd:latest
+          environment:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: Europe/Amsterdam
           ports:
             - containerPort: 8080
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: downloads
+              mountPath: /downloads
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: sabnzbd-config-pvc
+        - name: downloads
+          persistentVolumeClaim:
+            claimName: media-downloads-pvc
 ---
 apiVersion: v1
 kind: Service

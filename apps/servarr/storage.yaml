@@ -1,0 +1,156 @@
+# Persistent Volumes
+---
+# Individual config volumes (ReadWriteOnce - one service each)
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: radarr-config-pv
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /data/services/radarr/config
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: sonarr-config-pv
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /data/services/sonarr/config
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: sabnzbd-config-pv
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /data/services/sabnzbd/config
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: plex-config-pv
+spec:
+  capacity:
+    storage: 50Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /data/services/plex/config
+---
+# Shared volumes (ReadWriteMany - multiple services)
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: media-downloads-pv
+spec:
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: /data/media/downloads
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: media-sources-pv
+spec:
+  capacity:
+    storage: 500Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: /data/media
+---
+# Persistent Volume Claims
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: radarr-config-pvc
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  volumeName: radarr-config-pv
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sonarr-config-pvc
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  volumeName: sonarr-config-pv
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sabnzbd-config-pvc
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  volumeName: sabnzbd-config-pv
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: plex-config-pvc
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
+  volumeName: plex-config-pv
+---
+# Shared volume claims
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: media-downloads-pvc
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Gi
+  volumeName: media-downloads-pv
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: media-sources-pvc
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 500Gi
+  volumeName: media-sources-pv

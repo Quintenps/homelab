@@ -16,8 +16,34 @@ spec:
       containers:
         - name: plex
           image: lscr.io/linuxserver/plex:latest
+          environment:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: Europe/Amsterdam
           ports:
             - containerPort: 32400
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: movies
+              mountPath: /movies
+            - name: tv
+              mountPath: /tv
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: plex-config-pvc
+        - name: movies
+          persistentVolumeClaim:
+            claimName: media-sources-pvc
+          subPath: movies
+        - name: tv
+          persistentVolumeClaim:
+            claimName: media-sources-pvc
+          subPath: tv
 ---
 apiVersion: v1
 kind: Service

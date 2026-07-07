@@ -16,8 +16,33 @@ spec:
       containers:
         - name: radarr
           image: lscr.io/linuxserver/radarr:latest
+          environment:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: Europe/Amsterdam
           ports:
             - containerPort: 7878
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: movies
+              mountPath: /movies
+            - name: downloads
+              mountPath: /downloads
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: radarr-config-pvc
+        - name: movies
+          persistentVolumeClaim:
+            claimName: media-sources-pvc
+          subPath: movies
+        - name: downloads
+          persistentVolumeClaim:
+            claimName: media-downloads-pvc
 ---
 apiVersion: v1
 kind: Service
