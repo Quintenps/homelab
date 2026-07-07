@@ -1,23 +1,13 @@
 # Homelab
 
-This repository stores my homelab configuration for my k3s Kubernetes environment.
+This repository stores Kubernetes configuration for my homelab.
 
-My homeserver is **apollo** and I use this repo to keep cluster and app settings versioned, reproducible, and easy to expand over time.
+Homelab details:
+- Homeserver: apollo
+- Hardware: Dell OptiPlex 3050 Micro
+- Kubernetes: k3s
 
-## Current services
-
-- Sabnzbd
-- Sonarr
-- Radarr
-- Plex
-
-## Suggested structure
-
-- `clusters/apollo/` - cluster-specific k3s settings for apollo
-- `infrastructure/` - shared cluster components (networking, storage, observability, etc.)
-- `apps/servarr/` - media stack app configs
-  - `sabnzbd/`
-  - `sonarr/`
-  - `radarr/`
-  - `plex/`
-- `apps/future/` - placeholder for additional self-hosted services
+Layout:
+- `clusters/apollo/` for cluster-specific settings
+- `infrastructure/` for shared cluster components
+- `apps/` for self-hosted application manifests
