@@ -58,29 +58,9 @@ metadata:
   name: sabnzbd
   namespace: media
 spec:
+  type: NodePort
   selector:
     app: sabnzbd
   ports:
     - port: 8080
       targetPort: 8080
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: sabnzbd
-  namespace: media
-  annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: web
-spec:
-  ingressClassName: traefik
-  rules:
-    - host: sabnzbd.apollo.local
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: sabnzbd
-                port:
-                  number: 8080

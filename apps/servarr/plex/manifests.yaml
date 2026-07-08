@@ -65,29 +65,9 @@ metadata:
   name: plex
   namespace: media
 spec:
+  type: NodePort
   selector:
     app: plex
   ports:
     - port: 32400
       targetPort: 32400
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: plex
-  namespace: media
-  annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: web
-spec:
-  ingressClassName: traefik
-  rules:
-    - host: plex.apollo.local
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: plex
-                port:
-                  number: 32400
