@@ -48,6 +48,8 @@ spec:
             - name: tv
               mountPath: /tv
               subPath: tv
+            - name: dri
+              mountPath: /dev/dri
       volumes:
         - name: config
           persistentVolumeClaim:
@@ -58,6 +60,9 @@ spec:
         - name: tv
           persistentVolumeClaim:
             claimName: media-sources-pvc
+        - name: dri
+          hostPath:
+            path: /dev/dri
 ---
 apiVersion: v1
 kind: Service
