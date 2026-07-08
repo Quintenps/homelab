@@ -76,6 +76,19 @@ spec:
   hostPath:
     path: /data/media
 ---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: sabnzbd-incomplete-downloads-pv
+spec:
+  capacity:
+    storage: 150Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: ""
+  hostPath:
+    path: /data/services/sabnzbd/incomplete-downloads
+---
 # Shared Persistent Volume Claims
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -104,3 +117,17 @@ spec:
     requests:
       storage: 500Gi
   volumeName: media-sources-pv
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sabnzbd-incomplete-downloads-pvc
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: ""
+  resources:
+    requests:
+      storage: 150Gi
+  volumeName: sabnzbd-incomplete-downloads-pv
