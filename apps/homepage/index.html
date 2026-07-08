@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apollo - Services Dashboard</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNyIgZmlsbD0iIzFhMWMyMyIvPjxwYXRoIGQ9Ik04IDEwbDggNi04IDZ2LTNsNC0zLTQtM3oiIGZpbGw9IiM3M2RhZjUiLz48cmVjdCB4PSIxOCIgeT0iMjAiIHdpZHRoPSI2IiBoZWlnaHQ9IjIiIGZpbGw9IiNmZjc1YTEiLz48L3N2Zz4=">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+            background-color: #1a1b26;
+            color: #c0caf5;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .header {
+            max-width: 1200px;
+            margin: 0 auto 40px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 400;
+            letter-spacing: 1px;
+            color: #7aa2f7;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 13px;
+            color: #565f89;
+            letter-spacing: 0.5px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            background: #16171e;
+            border: 1px solid #2a2b37;
+            padding: 24px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            min-height: 140px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: currentColor;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .service-card:hover {
+            border-color: #565f89;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        .service-card:hover::before {
+            opacity: 0.6;
+        }
+
+        .service-card:active {
+            background-color: #1f2030;
+        }
+
+        .service-card.sonarr {
+            color: #7aa2f7;
+        }
+
+        .service-card.radarr {
+            color: #f7768e;
+        }
+
+        .service-card.sabnzbd {
+            color: #ff9e64;
+        }
+
+        .service-card.plex {
+            color: #bb9af7;
+        }
+
+        .service-icon {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 12px;
+            opacity: 0.7;
+            transition: opacity 0.2s ease;
+        }
+
+        .service-card:hover .service-icon {
+            opacity: 1;
+        }
+
+        .service-name {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .service-port {
+            font-size: 12px;
+            color: #565f89;
+            letter-spacing: 0.3px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 640px) {
+            body {
+                padding: 16px;
+            }
+
+            .header {
+                margin-bottom: 32px;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .service-card {
+                padding: 20px;
+                min-height: 120px;
+            }
+
+            .service-name {
+                font-size: 15px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>apollo</h1>
+        <p>services dashboard</p>
+    </div>
+
+    <div class="services-grid">
+        <a href="#" data-service="sonarr" data-port="8989" class="service-card sonarr" title="Sonarr - TV series management">
+            <div class="service-name">Sonarr</div>
+        </a>
+
+        <a href="#" data-service="radarr" data-port="7878" class="service-card radarr" title="Radarr - Movie management">
+            <div class="service-name">Radarr</div>
+        </a>
+
+        <a href="#" data-service="sabnzbd" data-port="8080" class="service-card sabnzbd" title="Sabnzbd - Usenet client">
+            <div class="service-name">Sabnzbd</div>
+        </a>
+
+        <a href="#" data-service="plex" data-port="32400" class="service-card plex" title="Plex - Media server">
+            <div class="service-name">Plex</div>
+        </a>
+    </div>
+
+    <script>
+        function getServiceUrl(port) {
+            const protocol = window.location.protocol;
+            const host = window.location.hostname;
+            return `${protocol}//${host}:${port}`;
+        }
+
+        document.querySelectorAll('.service-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                e.preventDefault();
+                const port = card.getAttribute('data-port');
+                window.location.href = getServiceUrl(port);
+            });
+        });
+    </script>
+</body>
+</html>
