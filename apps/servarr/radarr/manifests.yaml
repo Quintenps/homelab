@@ -64,7 +64,7 @@ metadata:
   name: radarr
   namespace: media
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: radarr
   ports:

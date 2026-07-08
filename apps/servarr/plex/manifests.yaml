@@ -65,7 +65,7 @@ metadata:
   name: plex
   namespace: media
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: plex
   ports:

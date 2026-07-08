@@ -64,7 +64,7 @@ metadata:
   name: sonarr
   namespace: media
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: sonarr
   ports:
