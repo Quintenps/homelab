@@ -30,21 +30,21 @@ spec:
         image: lscr.io/linuxserver/wireguard:latest
         env:
         - name: PUID
-          value: "1000"
+          value: 1000
         - name: PGID
-          value: "1000"
+          value: 1000
         - name: TZ
-          value: "Europe/Amsterdam"
+          value: Europe/Amsterdam
         - name: PEERS
-          value: "1"
+          value: 1
         - name: PEERDNS
-          value: "1.1.1.1"
+          value: 1.1.1.1
         - name: SERVERURL
           value: ""
         - name: SERVERPORT
-          value: "51820"
+          value: 51820
         - name: ALLOWEDIPS
-          value: "0.0.0.0/0"
+          value: 0.0.0.0/0
         securityContext:
           privileged: true
           capabilities:

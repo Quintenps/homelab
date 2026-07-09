@@ -32,15 +32,15 @@ spec:
           image: lscr.io/linuxserver/qbittorrent:latest
           env:
             - name: PUID
-              value: "1000"
+              value: 1000
             - name: PGID
-              value: "1000"
+              value: 1000
             - name: TZ
               value: Europe/Amsterdam
             - name: WEBUI_PORT
-              value: "8085"
+              value: 8085
             - name: TORRENTING_PORT
-              value: "6881"
+              value: 6881
           ports:
             - containerPort: 8085
               name: webui
