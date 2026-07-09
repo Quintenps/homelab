@@ -191,17 +191,17 @@
     </div>
 
     <script>
-        function getServiceUrl(port) {
-            const protocol = window.location.protocol;
-            const host = window.location.hostname;
-            return `${protocol}//${host}:${port}`;
+        function getServiceUrl(port, service) {
+            const protocol = 'http:';
+            return `${protocol}//${service}.media.svc.cluster.local:${port}`;
         }
 
         document.querySelectorAll('.service-card').forEach(card => {
             card.addEventListener('click', (e) => {
                 e.preventDefault();
                 const port = card.getAttribute('data-port');
-                window.location.href = getServiceUrl(port);
+                const service = card.getAttribute('data-service');
+                window.location.href = getServiceUrl(port, service);
             });
         });
     </script>
