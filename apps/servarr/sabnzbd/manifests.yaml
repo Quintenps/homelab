@@ -63,7 +63,7 @@ metadata:
   name: sabnzbd
   namespace: media
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: sabnzbd
   ports:

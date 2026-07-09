@@ -68,13 +68,24 @@ metadata:
   name: qbittorrent
   namespace: media
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: qbittorrent
   ports:
     - port: 8085
       targetPort: 8085
       name: webui
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qbittorrent-torrent
+  namespace: media
+spec:
+  type: LoadBalancer
+  selector:
+    app: qbittorrent
+  ports:
     - port: 6881
       targetPort: 6881
       protocol: TCP
