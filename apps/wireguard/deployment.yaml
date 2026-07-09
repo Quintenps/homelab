@@ -34,7 +34,7 @@ spec:
         - name: PGID
           value: "1000"
         - name: TZ
-          value: "UTC"
+          value: "Europe/Amsterdam"
         - name: PEERS
           value: "1"
         - name: PEERDNS
