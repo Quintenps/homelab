@@ -32,11 +32,11 @@ spec:
           image: lscr.io/linuxserver/radarr:latest
           env:
             - name: PUID
-              value: 1000
+              value: "1000"
             - name: PGID
-              value: 1000
+              value: "1000"
             - name: TZ
-              value: Europe/Amsterdam
+              value: "Europe/Amsterdam"
           ports:
             - containerPort: 7878
           volumeMounts:

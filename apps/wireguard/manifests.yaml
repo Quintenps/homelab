@@ -2,7 +2,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: wireguard-config
-  namespace: wireguard
+  namespace: default
 spec:
   accessModes:
     - ReadWriteOnce
@@ -14,7 +14,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: wireguard
-  namespace: wireguard
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -30,21 +30,21 @@ spec:
         image: lscr.io/linuxserver/wireguard:latest
         env:
         - name: PUID
-          value: 1000
+          value: "1000"
         - name: PGID
-          value: 1000
+          value: "1000"
         - name: TZ
-          value: Europe/Amsterdam
+          value: "Europe/Amsterdam"
         - name: PEERS
-          value: 1
+          value: "1"
         - name: PEERDNS
-          value: 1.1.1.1
+          value: "auto"
         - name: SERVERURL
           value: ""
         - name: SERVERPORT
-          value: 51820
+          value: "51820"
         - name: ALLOWEDIPS
-          value: 0.0.0.0/0
+          value: "0.0.0.0/0"
         securityContext:
           privileged: true
           capabilities:
@@ -81,14 +81,13 @@ apiVersion: v1
 kind: Service
 metadata:
   name: wireguard
-  namespace: wireguard
+  namespace: default
 spec:
-  type: NodePort
+  type: LoadBalancer
   ports:
-  - name: wireguard
-    port: 51820
-    targetPort: 51820
-    protocol: UDP
-    nodePort: 31820
+    - name: wireguard
+      port: 51820
+      protocol: UDP
+      targetPort: 51820
   selector:
     app: wireguard
