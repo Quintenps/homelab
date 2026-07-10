@@ -38,11 +38,11 @@ spec:
             - name: TZ
               value: "Europe/Amsterdam"
             - name: WEBUI_PORT
-              value: "8085"
+              value: "8080"
             - name: TORRENTING_PORT
               value: "6881"
           ports:
-            - containerPort: 8085
+            - containerPort: 8080
               name: webui
             - containerPort: 6881
               name: torrenting
@@ -72,8 +72,8 @@ spec:
   selector:
     app: qbittorrent
   ports:
-    - port: 8085
-      targetPort: 8085
+    - port: 8080
+      targetPort: 8080
       name: webui
 ---
 apiVersion: v1
