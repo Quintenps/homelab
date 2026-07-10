@@ -10,11 +10,7 @@
     "dependencies"
   ],
   "automerge": false,
-  "schedule": [
-    "after 10pm every weekday",
-    "before 5am every weekday",
-    "anytime on weekends"
-  ],
+  "timezone": "Europe/Amsterdam",
   "kubernetes": {
     "enabled": true
   },
