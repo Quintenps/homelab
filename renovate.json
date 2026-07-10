@@ -1,0 +1,25 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base",
+    ":dependencyDashboard",
+    ":semanticCommits"
+  ],
+  "labels": [
+    "renovate",
+    "dependencies"
+  ],
+  "automerge": false,
+  "schedule": [
+    "after 10pm every weekday",
+    "before 5am every weekday",
+    "anytime on weekends"
+  ],
+  "kubernetes": {
+    "enabled": true
+  },
+  "kustomize": {
+    "enabled": true
+  },
+  "vulnerabilityAlerts": true
+}
