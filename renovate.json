@@ -1,15 +1,13 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base",
-    ":dependencyDashboard",
+    "config:recommended",
     ":semanticCommits"
   ],
   "labels": [
     "renovate",
     "dependencies"
   ],
-  "automerge": false,
   "timezone": "Europe/Amsterdam",
   "kubernetes": {
     "enabled": true
@@ -17,5 +15,5 @@
   "kustomize": {
     "enabled": true
   },
-  "vulnerabilityAlerts": true
+  "osvVulnerabilityAlerts": true
 }
