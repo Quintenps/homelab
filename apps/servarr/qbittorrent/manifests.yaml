@@ -30,7 +30,7 @@ spec:
       priorityClassName: heavy-workload
       containers:
         - name: qbittorrent
-          image: lscr.io/linuxserver/qbittorrent:20.04.1
+          image: lscr.io/linuxserver/qbittorrent:latest
           env:
             - name: PUID
               value: "1000"

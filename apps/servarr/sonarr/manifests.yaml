@@ -29,7 +29,7 @@ spec:
     spec:
       containers:
         - name: sonarr
-          image: lscr.io/linuxserver/sonarr:5.14
+          image: lscr.io/linuxserver/sonarr:latest
           env:
             - name: PUID
               value: "1000"

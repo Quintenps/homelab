@@ -11,7 +11,10 @@
       "description": "LinuxServer.io images use non-semver tags; loose versioning sorts them correctly",
       "matchDatasources": ["docker"],
       "matchPackageNames": ["/^lscr\\.io\\/linuxserver\\//"],
-      "versioning": "loose"
+      "versioning": "loose",
+      "ignoreUnstable": false,
+      "matchCurrentVersion": "latest",
+      "enabled": false
     }
   ]
 }
