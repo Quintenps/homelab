@@ -34,5 +34,5 @@ spec:
     defaultRequest:
       memory: "100Mi"
       cpu: "50m"
-    type: Pod
+    type: Container
 
