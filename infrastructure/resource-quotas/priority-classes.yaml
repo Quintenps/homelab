@@ -1,0 +1,8 @@
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: heavy-workload
+value: 100
+globalDefault: false
+description: "For bandwidth-intensive and compute-heavy workloads (Plex, qBittorrent)"

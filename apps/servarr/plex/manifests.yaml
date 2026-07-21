@@ -27,6 +27,7 @@ spec:
       labels:
         app: plex
     spec:
+      priorityClassName: heavy-workload
       containers:
         - name: plex
           image: lscr.io/linuxserver/plex:1.43.3.10828-00f62d37d-ls315
@@ -39,6 +40,13 @@ spec:
               value: "Europe/Amsterdam"
           ports:
             - containerPort: 32400
+          resources:
+            requests:
+              cpu: 500m
+              memory: 512Mi
+            limits:
+              cpu: 1200m
+              memory: 1500Mi
           volumeMounts:
             - name: config
               mountPath: /config

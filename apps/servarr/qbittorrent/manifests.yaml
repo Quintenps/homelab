@@ -27,6 +27,7 @@ spec:
       labels:
         app: qbittorrent
     spec:
+      priorityClassName: heavy-workload
       containers:
         - name: qbittorrent
           image: lscr.io/linuxserver/qbittorrent:20.04.1
@@ -49,6 +50,13 @@ spec:
             - containerPort: 6881
               protocol: UDP
               name: torrenting-udp
+          resources:
+            requests:
+              cpu: 400m
+              memory: 256Mi
+            limits:
+              cpu: 1200m
+              memory: 1500Mi
           volumeMounts:
             - name: config
               mountPath: /config

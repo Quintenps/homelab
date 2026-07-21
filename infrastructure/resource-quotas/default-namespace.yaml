@@ -1,0 +1,51 @@
+---
+# Resource Quota for default namespace
+# Allocates 30% of cluster resources: 1.2 cores, 2.4GB memory
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: default-quota
+  namespace: default
+spec:
+  hard:
+    requests.cpu: "1200m"
+    requests.memory: "2400Mi"
+    limits.cpu: "1200m"
+    limits.memory: "2400Mi"
+    pods: "20"
+    services.loadbalancers: "2"
+  scopeSelector:
+    matchExpressions:
+    - operator: In
+      scopeName: PriorityClass
+      values: ["default"]
+---
+# LimitRange for default namespace
+# Sets default and max resources for containers
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: default-limits
+  namespace: default
+spec:
+  limits:
+  - max:
+      cpu: "500m"
+      memory: "512Mi"
+    min:
+      cpu: "10m"
+      memory: "32Mi"
+    default:
+      cpu: "100m"
+      memory: "128Mi"
+    defaultRequest:
+      cpu: "50m"
+      memory: "64Mi"
+    type: Container
+  - max:
+      cpu: "1200m"
+      memory: "2400Mi"
+    min:
+      cpu: "10m"
+      memory: "32Mi"
+    type: Pod

@@ -1,0 +1,58 @@
+---
+# Resource Quota for media namespace
+# Allocates 60% of cluster resources: 2.4 cores, 4.8GB memory
+# This namespace contains CPU/memory-intensive workloads (Plex, qBittorrent, etc.)
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: media-quota
+  namespace: media
+spec:
+  hard:
+    requests.cpu: "2400m"
+    requests.memory: "4800Mi"
+    limits.cpu: "2400m"
+    limits.memory: "4800Mi"
+    pods: "30"
+    persistentvolumeclaims: "10"
+---
+# LimitRange for media namespace
+# Sets default and max resources for containers
+# Applies to all pods without explicit priority class
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: media-limits
+  namespace: media
+spec:
+  limits:
+  - max:
+      cpu: "300m"
+      memory: "384Mi"
+    min:
+      cpu: "10m"
+      memory: "32Mi"
+    default:
+      cpu: "150m"
+      memory: "256Mi"
+    defaultRequest:
+      cpu: "100m"
+      memory: "128Mi"
+    type: Container
+    scopeSelector:
+      matchExpressions:
+      - operator: NotIn
+        scopeName: PriorityClass
+        values: ["heavy-workload"]
+  - max:
+      cpu: "800m"
+      memory: "1536Mi"
+    min:
+      cpu: "10m"
+      memory: "32Mi"
+    type: Pod
+    scopeSelector:
+      matchExpressions:
+      - operator: NotIn
+        scopeName: PriorityClass
+        values: ["heavy-workload"]
