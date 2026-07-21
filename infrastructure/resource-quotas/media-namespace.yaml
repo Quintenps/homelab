@@ -39,11 +39,6 @@ spec:
       cpu: "100m"
       memory: "128Mi"
     type: Container
-    scopeSelector:
-      matchExpressions:
-      - operator: NotIn
-        scopeName: PriorityClass
-        values: ["heavy-workload"]
   - max:
       cpu: "800m"
       memory: "1536Mi"
@@ -51,8 +46,4 @@ spec:
       cpu: "10m"
       memory: "32Mi"
     type: Pod
-    scopeSelector:
-      matchExpressions:
-      - operator: NotIn
-        scopeName: PriorityClass
-        values: ["heavy-workload"]
+

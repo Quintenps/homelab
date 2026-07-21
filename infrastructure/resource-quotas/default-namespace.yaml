@@ -14,11 +14,6 @@ spec:
     limits.memory: "2400Mi"
     pods: "20"
     services.loadbalancers: "2"
-  scopeSelector:
-    matchExpressions:
-    - operator: In
-      scopeName: PriorityClass
-      values: ["default"]
 ---
 # LimitRange for default namespace
 # Sets default and max resources for containers
