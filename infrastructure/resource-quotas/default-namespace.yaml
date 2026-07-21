@@ -25,9 +25,7 @@ metadata:
 spec:
   limits:
   - max:
-      cpu: "1"
-      memory: "2000Mi"
+      memory: "1000Mi"
     min:
-      cpu: "0.5"
-      memory: "256Mi"
+      memory: "32Mi"
     type: Pod
