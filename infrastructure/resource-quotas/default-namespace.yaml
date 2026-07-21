@@ -28,4 +28,9 @@ spec:
       memory: "1000Mi"
     min:
       memory: "32Mi"
+    default:
+      memory: "256Mi"
+    defaultRequest:
+      memory: "64Mi"
+      cpu: "25m"
     type: Pod
