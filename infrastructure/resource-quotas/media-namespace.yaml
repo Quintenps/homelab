@@ -9,16 +9,15 @@ metadata:
   namespace: media
 spec:
   hard:
-    requests.cpu: "2400m"
+    requests.cpu: "2.4"
     requests.memory: "4800Mi"
-    limits.cpu: "2400m"
+    limits.cpu: "2.4"
     limits.memory: "4800Mi"
     pods: "30"
     persistentvolumeclaims: "10"
 ---
 # LimitRange for media namespace
-# Sets default and max resources for containers
-# Applies to all pods without explicit priority class
+# Sets max resources per pod
 apiVersion: v1
 kind: LimitRange
 metadata:
@@ -27,23 +26,10 @@ metadata:
 spec:
   limits:
   - max:
-      cpu: "300m"
-      memory: "384Mi"
+      cpu: "2"
+      memory: "4000Mi"
     min:
-      cpu: "10m"
-      memory: "32Mi"
-    default:
-      cpu: "150m"
+      cpu: "1"
       memory: "256Mi"
-    defaultRequest:
-      cpu: "100m"
-      memory: "128Mi"
-    type: Container
-  - max:
-      cpu: "800m"
-      memory: "1536Mi"
-    min:
-      cpu: "10m"
-      memory: "32Mi"
     type: Pod
 
