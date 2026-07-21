@@ -1,0 +1,29 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: image-refresh
+  namespace: default
+spec:
+  schedule: "0 3 * * *" 
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 5
+  failedJobsHistoryLimit: 5
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: image-refresh
+          restartPolicy: OnFailure
+          containers:
+            - name: kubectl
+              image: bitnami/kubectl:latest
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  echo "Restarting deployments in default namespace..."
+                  kubectl rollout restart deployment -n default
+                  echo "Restarting deployments in media namespace..."
+                  kubectl rollout restart deployment -n media
+                  echo "Image refresh completed!"
