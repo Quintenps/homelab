@@ -10,7 +10,6 @@ spec:
   hard:
     requests.cpu: "1.2"
     requests.memory: "2400Mi"
-    limits.cpu: "1.2"
     limits.memory: "2400Mi"
     pods: "20"
     services.loadbalancers: "2"
