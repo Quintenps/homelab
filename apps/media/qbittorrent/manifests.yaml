@@ -27,6 +27,7 @@ spec:
       labels:
         app: qbittorrent
     spec:
+      automountServiceAccountToken: false
       priorityClassName: heavy-workload
       containers:
         - name: qbittorrent

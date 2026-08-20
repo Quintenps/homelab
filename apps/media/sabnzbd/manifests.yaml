@@ -27,6 +27,7 @@ spec:
       labels:
         app: sabnzbd
     spec:
+      automountServiceAccountToken: false
       containers:
         - name: sabnzbd
           image: lscr.io/linuxserver/sabnzbd:latest

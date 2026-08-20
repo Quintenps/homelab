@@ -27,6 +27,7 @@ spec:
       labels:
         app: plex
     spec:
+      automountServiceAccountToken: false
       priorityClassName: heavy-workload
       containers:
         - name: plex
