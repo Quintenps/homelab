@@ -40,6 +40,28 @@ spec:
               value: "Europe/Amsterdam"
           ports:
             - containerPort: 7878
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 7878
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 7878
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 2
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 7878
+            periodSeconds: 1
+            failureThreshold: 30
           volumeMounts:
             - name: config
               mountPath: /config

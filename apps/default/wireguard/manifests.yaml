@@ -56,6 +56,16 @@ spec:
         - name: wireguard
           containerPort: 51820
           protocol: UDP
+        livenessProbe:
+          exec:
+            command:
+              - /bin/sh
+              - -c
+              - ps aux | grep -i wireguard | grep -v grep
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          timeoutSeconds: 5
+          failureThreshold: 3
         volumeMounts:
         - name: wireguard-config
           mountPath: /config
