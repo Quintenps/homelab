@@ -5,6 +5,7 @@ resources:
   - namespace.yaml
   - storage-pvc.yaml
   - storage-pv.yaml
+  - network-policies.yaml
   - sabnzbd/manifests.yaml
   - sonarr/manifests.yaml
   - radarr/manifests.yaml
