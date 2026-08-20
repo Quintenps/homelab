@@ -7,7 +7,6 @@ spec:
     storage: 50Gi
   accessModes:
     - ReadWriteOnce
-  storageClassName: ""
   hostPath:
     path: /data/services/plex/config
 ---
@@ -20,7 +19,6 @@ spec:
     storage: 10Gi
   accessModes:
     - ReadWriteOnce
-  storageClassName: ""
   hostPath:
     path: /data/services/radarr/config
 ---
@@ -33,7 +31,6 @@ spec:
     storage: 10Gi
   accessModes:
     - ReadWriteOnce
-  storageClassName: ""
   hostPath:
     path: /data/services/sonarr/config
 ---
@@ -46,7 +43,6 @@ spec:
     storage: 10Gi
   accessModes:
     - ReadWriteOnce
-  storageClassName: ""
   hostPath:
     path: /data/services/sabnzbd/config
 ---
@@ -59,7 +55,6 @@ spec:
     storage: 10Gi
   accessModes:
     - ReadWriteOnce
-  storageClassName: ""
   hostPath:
     path: /data/services/qbittorrent/config
 ---
@@ -72,7 +67,6 @@ spec:
     storage: 100Gi
   accessModes:
     - ReadWriteOnce
-  storageClassName: ""
   reclaimPolicy: Retain
   hostPath:
     path: /data/media/downloads
@@ -86,7 +80,6 @@ spec:
     storage: 500Gi
   accessModes:
     - ReadWriteOnce
-  storageClassName: ""
   reclaimPolicy: Retain
   hostPath:
     path: /data/media
@@ -100,6 +93,5 @@ spec:
     storage: 150Gi
   accessModes:
     - ReadWriteOnce
-  storageClassName: ""
   hostPath:
     path: /data/services/sabnzbd/incomplete-downloads
