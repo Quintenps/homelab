@@ -32,6 +32,8 @@ spec:
       containers:
         - name: plex
           image: lscr.io/linuxserver/plex:latest
+          securityContext:
+            allowPrivilegeEscalation: false
           env:
             - name: PUID
               value: "1000"
