@@ -41,7 +41,7 @@ spec:
         - name: PEERDNS
           value: "auto"
         - name: SERVERURL
-          value: ""
+          value: "apollo.quinten.dev"
         - name: SERVERPORT
           value: "51820"
         - name: ALLOWEDIPS

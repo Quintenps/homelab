@@ -44,7 +44,7 @@ spec:
             - containerPort: 7878
           livenessProbe:
             httpGet:
-              path: /health
+              path: /ping
               port: 7878
             initialDelaySeconds: 30
             periodSeconds: 10
