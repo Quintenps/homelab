@@ -28,7 +28,6 @@ spec:
         app: plex
     spec:
       automountServiceAccountToken: false
-      priorityClassName: heavy-workload
       containers:
         - name: plex
           image: lscr.io/linuxserver/plex:latest
