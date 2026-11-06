@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: beszel-agent
+spec:
+  selector:
+    matchLabels:
+      app: beszel-agent
+  template:
+    metadata:
+      labels:
+        app: beszel-agent
+    spec:
+      automountServiceAccountToken: false
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+        - name: beszel-agent
+          image: henrygd/beszel-agent:latest
+          securityContext:
+            allowPrivilegeEscalation: false
+          env:
+            - name: LISTEN
+              value: "45876"
+            - name: HUB_URL
+              value: http://beszel.beszel.svc.cluster.local:8090
+            - name: KEY
+              valueFrom:
+                secretKeyRef:
+                  name: beszel-agent-auth
+                  key: KEY
+            - name: TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: beszel-agent-auth
+                  key: TOKEN
+          ports:
+            - name: agent
+              containerPort: 45876
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 25m
+              memory: 32Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi
+          livenessProbe:
+            exec:
+              command:
+                - /agent
+                - health
+            periodSeconds: 30
+            timeoutSeconds: 5
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/beszel-agent
+      volumes:
+        - name: data
+          hostPath:
+            path: /var/lib/beszel-agent
+            type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: beszel-agent
+spec:
+  type: ClusterIP
+  selector:
+    app: beszel-agent
+  ports:
+    - name: agent
+      port: 45876
+      targetPort: agent

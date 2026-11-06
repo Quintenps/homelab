@@ -109,6 +109,10 @@
             color: #bb9af7;
         }
 
+        .service-card.beszel {
+            color: #9ece6a;
+        }
+
         .service-icon {
             width: 40px;
             height: 40px;
@@ -196,12 +200,16 @@
         <a href="#" data-service="plex" data-port="32400" class="service-card plex" title="Plex - Media server">
             <div class="service-name">Plex</div>
         </a>
+
+        <a href="#" data-service="beszel" data-namespace="beszel" data-port="8090" class="service-card beszel" title="Beszel - Server monitoring">
+            <div class="service-name">Beszel</div>
+        </a>
     </div>
 
     <script>
-        function getServiceUrl(port, service) {
+        function getServiceUrl(port, service, namespace = 'media') {
             const protocol = 'http:';
-            return `${protocol}//${service}.media.svc.cluster.local:${port}`;
+            return `${protocol}//${service}.${namespace}.svc.cluster.local:${port}`;
         }
 
         document.querySelectorAll('.service-card').forEach(card => {
@@ -209,7 +217,8 @@
                 e.preventDefault();
                 const port = card.getAttribute('data-port');
                 const service = card.getAttribute('data-service');
-                window.location.href = getServiceUrl(port, service);
+                const namespace = card.getAttribute('data-namespace') || 'media';
+                window.location.href = getServiceUrl(port, service, namespace);
             });
         });
     </script>
