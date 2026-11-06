@@ -14,7 +14,7 @@ spec:
       template:
         spec:
           serviceAccountName: image-refresh
-          automountServiceAccountToken: false
+          automountServiceAccountToken: true
           restartPolicy: OnFailure
           containers:
             - name: kubectl
