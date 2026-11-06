@@ -37,7 +37,7 @@ spec:
         - name: TZ
           value: "Europe/Amsterdam"
         - name: PEERS
-          value: "1"
+          value: "5"
         - name: PEERDNS
           value: "auto"
         - name: SERVERURL
