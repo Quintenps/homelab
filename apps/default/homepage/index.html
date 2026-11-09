@@ -6,6 +6,17 @@
     <title>Apollo - Services Dashboard</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNyIgZmlsbD0iIzFhMWMyMyIvPjxwYXRoIGQ9Ik04IDEwbDggNi04IDZ2LTNsNC0zLTQtM3oiIGZpbGw9IiM3M2RhZjUiLz48cmVjdCB4PSIxOCIgeT0iMjAiIHdpZHRoPSI2IiBoZWlnaHQ9IjIiIGZpbGw9IiNmZjc1YTEiLz48L3N2Zz4=">
     <style>
+        :root {
+            color-scheme: dark;
+            --page: #101319;
+            --surface: #111315;
+            --surface-hover: #17191c;
+            --border: #25282c;
+            --muted: #8b9098;
+            --text: #eceef0;
+            --accent: #c1c6ce;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -13,198 +24,320 @@
         }
 
         body {
-            font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
-            background-color: #1a1b26;
-            color: #c0caf5;
-            padding: 20px;
-            line-height: 1.6;
+            min-height: 100vh;
+            padding: clamp(24px, 5vw, 56px) 24px;
+            background: var(--page);
+            color: var(--text);
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            line-height: 1.5;
+        }
+
+        .page-shell {
+            width: 100%;
+            max-width: 1080px;
+            margin-inline: auto;
         }
 
         .header {
-            max-width: 1200px;
-            margin: 0 auto 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            margin-bottom: 36px;
+        }
+
+        .brand-lockup {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .brand-mark {
+            display: grid;
+            width: 42px;
+            height: 42px;
+            flex: 0 0 auto;
+            place-items: center;
+            border: 1px solid #30343a;
+            border-radius: 11px;
+            background: #151719;
+            color: #d7dbe0;
+            font-size: 19px;
+            font-weight: 700;
+        }
+
+        .eyebrow {
+            margin-bottom: 2px;
+            color: var(--muted);
+            font-size: 11px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
         }
 
         .header h1 {
-            font-size: 24px;
-            font-weight: 400;
-            letter-spacing: 1px;
-            color: #7aa2f7;
-            margin-bottom: 8px;
+            color: var(--text);
+            font-size: clamp(23px, 3vw, 28px);
+            font-weight: 600;
+            letter-spacing: -0.8px;
+            line-height: 1.2;
         }
 
-        .header p {
+        .header-copy p {
+            margin-top: 3px;
+            color: var(--muted);
             font-size: 13px;
-            color: #565f89;
-            letter-spacing: 0.5px;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 26px 22px;
+        }
+
+        .category {
+            border-top: 1px solid var(--border);
+            padding-top: 15px;
+        }
+
+        .category-heading {
+            display: flex;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 4px 9px;
+            margin-bottom: 12px;
+        }
+
+        .category h2 {
+            color: #dfe2e6;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .category-description {
+            color: var(--muted);
+            font-size: 11px;
         }
 
         .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            max-width: 1200px;
-            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            gap: 10px;
         }
 
         .service-card {
-            background: #16171e;
-            border: 1px solid #2a2b37;
-            padding: 24px;
-            text-decoration: none;
-            color: inherit;
-            transition: all 0.2s ease;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
+            min-width: 0;
+            max-width: 100%;
+            min-height: 48px;
             align-items: center;
-            text-align: center;
-            min-height: 140px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .service-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: currentColor;
-            opacity: 0;
-            transition: opacity 0.2s ease;
-        }
-
-        .service-card:hover {
-            border-color: #565f89;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-        }
-
-        .service-card:hover::before {
-            opacity: 0.6;
-        }
-
-        .service-card:active {
-            background-color: #1f2030;
+            gap: 8px;
+            padding: 11px 12px;
+            border: 1px solid color-mix(in srgb, var(--service-accent) 24%, var(--border));
+            border-radius: 10px;
+            background: color-mix(in srgb, var(--service-accent) 5%, var(--surface));
+            text-decoration: none;
+            width: fit-content;
+            transition: border-color 140ms ease, background-color 140ms ease;
         }
 
         .service-card.sonarr {
-            color: #7aa2f7;
+            --service-accent: #829dbb;
         }
 
         .service-card.radarr {
-            color: #f7768e;
+            --service-accent: #bd8991;
         }
 
         .service-card.sabnzbd {
-            color: #ff9e64;
+            --service-accent: #bd986c;
         }
 
         .service-card.qbittorrent {
-            color: #4fd8c4;
+            --service-accent: #78a99e;
         }
 
         .service-card.plex {
-            color: #bb9af7;
+            --service-accent: #a28fbd;
         }
 
         .service-card.beszel {
-            color: #9ece6a;
+            --service-accent: #91a77a;
         }
 
-        .service-icon {
-            width: 40px;
-            height: 40px;
-            margin-bottom: 12px;
-            opacity: 0.7;
-            transition: opacity 0.2s ease;
+        .service-card:hover {
+            border-color: color-mix(in srgb, var(--service-accent) 42%, var(--border));
+            background: color-mix(in srgb, var(--service-accent) 9%, var(--surface-hover));
         }
 
-        .service-card:hover .service-icon {
-            opacity: 1;
+        .service-card:focus-visible {
+            outline: 2px solid #aeb5bf;
+            outline-offset: 2px;
+        }
+
+        .service-meta {
+            min-width: 0;
+            flex: 0 1 auto;
         }
 
         .service-name {
-            font-size: 16px;
-            font-weight: 500;
-            margin-bottom: 8px;
-            letter-spacing: 0.5px;
+            display: block;
+            color: var(--text);
+            font-size: 13px;
+            font-weight: 600;
+            overflow-wrap: anywhere;
         }
 
         .service-port {
-            font-size: 12px;
-            color: #565f89;
-            letter-spacing: 0.3px;
+            flex: 0 0 auto;
+            color: #777d86;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Courier New", monospace;
+            font-size: 10px;
         }
 
-        /* Responsive design */
-        @media (max-width: 640px) {
+        .service-arrow {
+            color: var(--service-accent);
+            font-size: 15px;
+        }
+
+        .footer {
+            margin-top: 30px;
+            color: #666b73;
+            font-size: 10px;
+            letter-spacing: 0.03em;
+        }
+
+        @media (min-width: 821px) {
             body {
-                padding: 16px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 540px) {
+            body {
+                padding: 24px 16px;
             }
 
             .header {
-                margin-bottom: 32px;
-            }
-
-            .header h1 {
-                font-size: 20px;
+                margin-bottom: 28px;
             }
 
             .services-grid {
-                grid-template-columns: 1fr;
-                gap: 12px;
+                align-items: stretch;
             }
 
             .service-card {
-                padding: 20px;
-                min-height: 120px;
-            }
-
-            .service-name {
-                font-size: 15px;
+                width: 100%;
+                min-height: 52px;
+                padding: 14px;
             }
         }
 
-        @media (max-width: 768px) {
-            .services-grid {
-                grid-template-columns: 1fr;
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
             }
         }
+
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>apollo</h1>
-        <p>services dashboard</p>
-    </div>
+    <main class="page-shell">
+        <header class="header">
+            <div class="brand-lockup">
+                <span class="brand-mark" aria-hidden="true">A</span>
+                <div class="header-copy">
+                    <p class="eyebrow">Apollo</p>
+                    <h1>Services</h1>
+                </div>
+            </div>
+        </header>
 
-    <div class="services-grid">
-        <a href="#" data-service="sonarr" data-port="8989" class="service-card sonarr" title="Sonarr - TV series management">
-            <div class="service-name">Sonarr</div>
-        </a>
+        <div class="categories-grid">
+        <section class="category" aria-labelledby="library-heading">
+            <div class="category-heading">
+                <h2 id="library-heading">Library</h2>
+                <span class="category-description">TV &amp; movies</span>
+            </div>
+            <div class="services-grid">
+                <a href="#" data-service="sonarr" data-port="8989" class="service-card sonarr" title="Sonarr - TV series management">
+                    <span class="service-meta">
+                        <span class="service-name">Sonarr</span>
+                    </span>
+                    <span class="service-port">8989</span>
+                    <span class="service-arrow" aria-hidden="true">&nearr;</span>
+                </a>
+                <a href="#" data-service="radarr" data-port="7878" class="service-card radarr" title="Radarr - Movie management">
+                    <span class="service-meta">
+                        <span class="service-name">Radarr</span>
+                    </span>
+                    <span class="service-port">7878</span>
+                    <span class="service-arrow" aria-hidden="true">&nearr;</span>
+                </a>
+            </div>
+        </section>
 
-        <a href="#" data-service="radarr" data-port="7878" class="service-card radarr" title="Radarr - Movie management">
-            <div class="service-name">Radarr</div>
-        </a>
+        <section class="category" aria-labelledby="downloads-heading">
+            <div class="category-heading">
+                <h2 id="downloads-heading">Downloads</h2>
+                <span class="category-description">Usenet &amp; torrents</span>
+            </div>
+            <div class="services-grid">
+                <a href="#" data-service="sabnzbd" data-port="8080" class="service-card sabnzbd" title="Sabnzbd - Usenet client">
+                    <span class="service-meta">
+                        <span class="service-name">Sabnzbd</span>
+                    </span>
+                    <span class="service-port">8080</span>
+                    <span class="service-arrow" aria-hidden="true">&nearr;</span>
+                </a>
+                <a href="#" data-service="qbittorrent" data-port="8080" class="service-card qbittorrent" title="qBittorrent - Torrent client">
+                    <span class="service-meta">
+                        <span class="service-name">qBittorrent</span>
+                    </span>
+                    <span class="service-port">8080</span>
+                    <span class="service-arrow" aria-hidden="true">&nearr;</span>
+                </a>
+            </div>
+        </section>
 
-        <a href="#" data-service="sabnzbd" data-port="8080" class="service-card sabnzbd" title="Sabnzbd - Usenet client">
-            <div class="service-name">Sabnzbd</div>
-        </a>
+        <section class="category" aria-labelledby="media-heading">
+            <div class="category-heading">
+                <h2 id="media-heading">Media</h2>
+                <span class="category-description">Stream your library</span>
+            </div>
+            <div class="services-grid">
+                <a href="#" data-service="plex" data-port="32400" class="service-card plex" title="Plex - Media server">
+                    <span class="service-meta">
+                        <span class="service-name">Plex</span>
+                    </span>
+                    <span class="service-port">32400</span>
+                    <span class="service-arrow" aria-hidden="true">&nearr;</span>
+                </a>
+            </div>
+        </section>
 
-        <a href="#" data-service="qbittorrent" data-port="8080" class="service-card qbittorrent" title="qBittorrent - Torrent client">
-            <div class="service-name">qBittorrent</div>
-        </a>
-
-        <a href="#" data-service="plex" data-port="32400" class="service-card plex" title="Plex - Media server">
-            <div class="service-name">Plex</div>
-        </a>
-
-        <a href="#" data-service="beszel" data-namespace="beszel" data-port="8090" class="service-card beszel" title="Beszel - Server monitoring">
-            <div class="service-name">Beszel</div>
-        </a>
-    </div>
+        <section class="category" aria-labelledby="infrastructure-heading">
+            <div class="category-heading">
+                <h2 id="infrastructure-heading">Infrastructure</h2>
+                <span class="category-description">Monitoring</span>
+            </div>
+            <div class="services-grid">
+                <a href="#" data-service="beszel" data-namespace="beszel" data-port="8090" class="service-card beszel" title="Beszel - Server monitoring">
+                    <span class="service-meta">
+                        <span class="service-name">Beszel</span>
+                    </span>
+                    <span class="service-port">8090</span>
+                    <span class="service-arrow" aria-hidden="true">&nearr;</span>
+                </a>
+            </div>
+        </section>
+        </div>
+    </main>
 
     <script>
         function getServiceUrl(port, service, namespace = 'media') {
