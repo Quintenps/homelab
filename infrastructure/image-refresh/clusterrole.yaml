@@ -5,8 +5,11 @@ metadata:
   name: image-refresh
 rules:
   - apiGroups: ["apps"]
-    resources: ["deployments"]
-    verbs: ["get", "list", "patch"]
+    resources: ["deployments", "daemonsets"]
+    verbs: ["get", "list", "patch", "watch"]
   - apiGroups: ["apps"]
-    resources: ["deployments/rollout"]
-    verbs: ["create"]
+    resources: ["replicasets"]
+    verbs: ["list"]
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["list"]

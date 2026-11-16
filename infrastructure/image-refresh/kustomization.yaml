@@ -8,4 +8,10 @@ resources:
   - serviceaccount.yaml
   - clusterrole.yaml
   - clusterrolebinding.yaml
+  - pvc.yaml
   - cronjob.yaml
+
+configMapGenerator:
+  - name: image-refresh-script
+    files:
+      - image-refresh.sh

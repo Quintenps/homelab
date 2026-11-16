@@ -7,8 +7,8 @@ metadata:
 spec:
   schedule: "0 3 * * *" 
   concurrencyPolicy: Forbid
-  successfulJobsHistoryLimit: 5
-  failedJobsHistoryLimit: 5
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 2
   jobTemplate:
     spec:
       template:
@@ -16,6 +16,8 @@ spec:
           serviceAccountName: image-refresh
           automountServiceAccountToken: true
           restartPolicy: OnFailure
+          securityContext:
+            fsGroup: 1001
           containers:
             - name: kubectl
               image: bitnami/kubectl:latest
@@ -23,10 +25,17 @@ spec:
                 allowPrivilegeEscalation: false
               command:
                 - /bin/sh
-                - -c
-                - |
-                  echo "Restarting deployments in default namespace..."
-                  kubectl rollout restart deployment -n default
-                  echo "Restarting deployments in media namespace..."
-                  kubectl rollout restart deployment -n media
-                  echo "Image refresh completed!"
+                - /scripts/image-refresh.sh
+              volumeMounts:
+                - name: script
+                  mountPath: /scripts
+                  readOnly: true
+                - name: logs
+                  mountPath: /logs
+          volumes:
+            - name: script
+              configMap:
+                name: image-refresh-script
+            - name: logs
+              persistentVolumeClaim:
+                claimName: image-refresh-logs
