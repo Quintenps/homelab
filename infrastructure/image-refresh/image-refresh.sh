@@ -13,14 +13,16 @@ log() {
     done
     mv "$log_file" "$log_file.1"
   fi
-  printf '%s %s\n' "$(date -u '+%Y-%m-%dT%H:%M:%SZ')" "$*" | tee -a "$log_file"
+  line="$(date -u '+%Y-%m-%dT%H:%M:%SZ') $*"
+  printf '%s\n' "$line" >> "$log_file"
+  printf '%s\n' "$line"
 }
 
 run_kubectl() {
   if output=$(kubectl "$@" 2>&1); then
     printf '%s\n' "$output"
   else
-    log "ERROR: kubectl $* failed: $output" >&2
+    printf 'ERROR: kubectl %s failed: %s\n' "$*" "$output" >&2
     return 1
   fi
 }
@@ -56,34 +58,47 @@ refresh() {
   kind=$2
   names=$(run_kubectl -n "$namespace" get "$kind" -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}')
   if [ -z "$names" ]; then
-    log "No ${kind}s in namespace $namespace"
     return
   fi
   for workload in $names; do
-    log "Refreshing $namespace/$kind/$workload"
     before=$(snapshot "$namespace" "$kind" "$workload")
-    log "Before $namespace/$kind/$workload (container, image, image ID): ${before:-unavailable}"
-    result=$(run_kubectl -n "$namespace" rollout restart "$kind/$workload")
-    log "$result"
-    result=$(run_kubectl -n "$namespace" rollout status "$kind/$workload" --timeout=5m)
-    log "$result"
+    run_kubectl -n "$namespace" rollout restart "$kind/$workload" >/dev/null
+    run_kubectl -n "$namespace" rollout status "$kind/$workload" --timeout=5m >/dev/null
     after=$(snapshot "$namespace" "$kind" "$workload")
-    log "After $namespace/$kind/$workload (container, image, image ID): ${after:-unavailable}"
-    if [ -z "$before" ] || [ -z "$after" ] ||
-      printf '%s\n%s\n' "$before" "$after" | awk -F '\t' '$3 == "unavailable" {found=1} END {exit !found}'; then
-      log "Image comparison unavailable for $namespace/$kind/$workload"
-    elif [ "$before" = "$after" ]; then
-      log "Observed images unchanged for $namespace/$kind/$workload"
-    else
-      log "Observed images changed for $namespace/$kind/$workload"
+    comparisons=$(jq -rn --arg before "$before" --arg after "$after" '
+      def entries:
+        split("\n") | map(select(length > 0) | split("\t") |
+          {container: .[0], image: .[1], imageID: .[2]});
+      ($before | entries) as $before
+      | ($after | entries) as $after
+      | ([$before[], $after[]] | map(.container) | unique)[] as $container
+      | [$before[] | select(.container == $container) | {image, imageID}] as $old
+      | [$after[] | select(.container == $container) | {image, imageID}] as $new
+      | if ($old | length) == 0 or ($new | length) == 0 or
+           any($old[], $new[]; .imageID == "unavailable") then
+          "unavailable \($container)"
+        elif $old != $new then
+          "changed \({container: $container, before: $old, after: $new} | tojson)"
+        else empty end
+    ')
+    if [ -z "$before" ] || [ -z "$after" ]; then
+      printf 'WARNING: Image comparison unavailable for %s/%s/%s: no active container images observed\n' "$namespace" "$kind" "$workload" >&2
+    fi
+    if [ -n "$comparisons" ]; then
+      while IFS= read -r comparison; do
+        case "$comparison" in
+          "changed "*) log "$namespace/$kind/$workload ${comparison#changed }" ;;
+          "unavailable "*) printf 'WARNING: Image comparison unavailable for %s/%s/%s container %s\n' "$namespace" "$kind" "$workload" "${comparison#unavailable }" >&2 ;;
+        esac
+      done <<EOF
+$comparisons
+EOF
     fi
   done
 }
 
-trap 'status=$?; if [ "$status" -ne 0 ]; then log "Image refresh failed (exit $status)" || echo "Unable to write failure to image refresh log" >&2; fi' EXIT
-log "Image refresh started"
+trap 'status=$?; if [ "$status" -ne 0 ]; then printf "Image refresh failed (exit %s)\n" "$status" >&2; fi' EXIT
 for namespace in default media beszel; do
   refresh "$namespace" deployment
 done
 refresh beszel daemonset
-log "Image refresh completed"
