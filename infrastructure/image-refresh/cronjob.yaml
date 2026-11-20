@@ -40,5 +40,5 @@ spec:
                 name: image-refresh-script
             - name: logs
               hostPath:
-                path: /home/quinten/image-refresh-logs
+                path: /home/quinten
                 type: Directory

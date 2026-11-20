@@ -78,26 +78,31 @@ refresh() {
            any($old[], $new[]; .imageID == "unavailable") then
           "unavailable \($container)"
         elif $old != $new then
-          "changed \({container: $container, before: $old, after: $new} | tojson)"
+          "changed"
         else empty end
     ')
     if [ -z "$before" ] || [ -z "$after" ]; then
       printf 'WARNING: Image comparison unavailable for %s/%s/%s: no active container images observed\n' "$namespace" "$kind" "$workload" >&2
     fi
     if [ -n "$comparisons" ]; then
+      changed=false
       while IFS= read -r comparison; do
         case "$comparison" in
-          "changed "*) log "$namespace/$kind/$workload ${comparison#changed }" ;;
+          "changed") changed=true ;;
           "unavailable "*) printf 'WARNING: Image comparison unavailable for %s/%s/%s container %s\n' "$namespace" "$kind" "$workload" "${comparison#unavailable }" >&2 ;;
         esac
       done <<EOF
 $comparisons
 EOF
+      if [ "$changed" = true ]; then
+        log "$namespace/$kind/$workload container image changed"
+      fi
     fi
   done
 }
 
 trap 'status=$?; if [ "$status" -ne 0 ]; then printf "Image refresh failed (exit %s)\n" "$status" >&2; fi' EXIT
+: >> "$log_file"
 for namespace in default media beszel; do
   refresh "$namespace" deployment
 done
